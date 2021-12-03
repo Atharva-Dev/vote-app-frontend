@@ -1,23 +1,61 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+
+import { Paper } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Button } from '@mui/material';
+
 
 function App() {
+
+  const [helper, setHelper] = useState("")
+  const [error, setError] = useState(false)
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
+
+
+
+  const checkIfValid = function (value) {
+    if(value == "" || value == null){
+      setError(false)
+      setIsSubmitDisabled(true)
+      setHelper("")
+    }
+    else if (!(/^\d+$/.test(value)) || value.length !== 12) {
+      setError(true)
+      setHelper("Invalid aadhar number")
+      setIsSubmitDisabled(true)
+    }
+    else {
+      setError(false)
+      setIsSubmitDisabled(false)
+      setHelper("")
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="login-container">
+
+      <Paper elevation={6} className="card" >
+        <div>
+
+
+          <TextField
+            className="full-width"
+            error={error}
+            id="outlined-error-helper-text"
+            label="Enter Your Aadhar Number"
+            helperText={helper}
+            onChange={(event) => checkIfValid(event.target.value)}
+          />
+          
+          <div className="button-container">
+          <Button className="left" variant="contained" disabled={isSubmitDisabled} onClick={() => alert("hi")}>Submit</Button>
+          <Button className="right" variant="outlined">Admin Login</Button>
+
+          </div>
+        </div>
+      </Paper>
+
     </div>
   );
 }
