@@ -4,6 +4,11 @@ import React, { useState } from 'react';
 import { Paper } from '@mui/material';
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
+import { Dialog } from '@mui/material';
+import { DialogContent } from '@mui/material';
+
+import StatusPopup from './StatusPopup';
+
 
 
 function VoterLogin() {
@@ -11,11 +16,12 @@ function VoterLogin() {
   const [helper, setHelper] = useState("")
   const [error, setError] = useState(false)
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
+  const [popupStatus, setPopStatus] = useState(false)
 
 
 
   const checkIfValid = function (value) {
-    if(value == "" || value == null){
+    if (value == "" || value == null) {
       setError(false)
       setIsSubmitDisabled(true)
       setHelper("")
@@ -32,6 +38,16 @@ function VoterLogin() {
     }
   }
 
+
+
+
+  const checkStatus = () => {
+
+    setPopStatus(true)
+  }
+
+
+
   return (
     <div className="login-container">
 
@@ -40,17 +56,27 @@ function VoterLogin() {
 
 
           <TextField
-            className="full-width"
+            fullWidth
             error={error}
             id="outlined-error-helper-text"
             label="Enter Your Aadhar Number"
             helperText={helper}
             onChange={(event) => checkIfValid(event.target.value)}
           />
-          
+
           <div className="button-container">
-          <Button className="left" variant="contained" disabled={isSubmitDisabled} onClick={() => alert("hi")}>Submit</Button>
-          <Button className="right" variant="outlined">Admin Login</Button>
+            <Button className="left" variant="contained" onClick={() => checkStatus()} disabled={isSubmitDisabled}>Submit</Button>
+            <Dialog
+              open={popupStatus}
+              onClose={() => setPopStatus(false)}
+              className="popup"
+              PaperProps={{sx: { height:"15em", width:"20em" }}}
+            >
+              <DialogContent>
+                <StatusPopup />
+              </DialogContent>
+            </Dialog>
+            <Button className="right" variant="outlined">Admin Login</Button>
 
           </div>
         </div>
