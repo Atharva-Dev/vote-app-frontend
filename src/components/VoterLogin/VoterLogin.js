@@ -1,11 +1,13 @@
 import './VoterLogin.css';
 import React, { useState } from 'react';
+import { baseUrl } from '../../Global'
 
 import { Paper } from '@mui/material';
 import { TextField } from '@mui/material';
 import { Button } from '@mui/material';
 import { Dialog } from '@mui/material';
 import { DialogContent } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import StatusPopup from './StatusPopup';
 
@@ -17,6 +19,7 @@ function VoterLogin() {
   const [error, setError] = useState(false)
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
   const [popupStatus, setPopStatus] = useState(false)
+  const [popupMessage, setPopupMessage] = useState("")
 
 
 
@@ -42,6 +45,10 @@ function VoterLogin() {
 
 
   const checkStatus = () => {
+
+    fetch(baseUrl+'/status')
+    .then(response => response.json())
+    .then(data => setPopupMessage(data.message));
 
     setPopStatus(true)
   }
@@ -73,10 +80,10 @@ function VoterLogin() {
               PaperProps={{sx: { height:"15em", width:"20em" }}}
             >
               <DialogContent>
-                <StatusPopup />
+                <StatusPopup message={popupMessage}/>
               </DialogContent>
             </Dialog>
-            <Button className="right" variant="outlined">Admin Login</Button>
+            <Link to="/admin-login"> <Button className="right" variant="outlined">Admin Login</Button></Link>
 
           </div>
         </div>
