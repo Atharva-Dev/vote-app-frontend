@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import VoterLogin from './components/VoterLogin/VoterLogin';
 import AdminLogin from './components/AdminLogin/AdminLogin';
+import AdminControl from './components/AdminControl/AdminControl';
+
 
 function App() {
 

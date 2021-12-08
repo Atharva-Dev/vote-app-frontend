@@ -8,8 +8,11 @@ import { Button } from '@mui/material';
 import { Dialog } from '@mui/material';
 import { DialogContent } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
 
 import StatusPopup from './StatusPopup';
+
 
 
 
@@ -20,10 +23,13 @@ function VoterLogin() {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true)
   const [popupStatus, setPopStatus] = useState(false)
   const [popupMessage, setPopupMessage] = useState("")
+  const [id, setId] = useState("")
+  navigate = useNavigate()
 
 
-
-  const checkIfValid = function (value) {
+  const checkIfValid = (value) => {
+    setId(value)
+    console.log(id)
     if (value == "" || value == null) {
       setError(false)
       setIsSubmitDisabled(true)
@@ -45,12 +51,20 @@ function VoterLogin() {
 
 
   const checkStatus = () => {
-
-    fetch(baseUrl+'/status')
+    alert(id)
+    fetch(baseUrl+'/status/'+id)
     .then(response => response.json())
-    .then(data => setPopupMessage(data.message));
+    .then(data => {
+      if(data.code != 0){
+        setPopupMessage(data.message)
+        setPopStatus(true)
+      }
+      else{
+        navigate('/vote')
+      }
+    });
 
-    setPopStatus(true)
+    
   }
 
 
