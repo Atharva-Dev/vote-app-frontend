@@ -1,0 +1,41 @@
+.container {
+    padding: 2em ;
+    margin: auto;
+    display: inline-block;
+}
+
+.padded {
+    display: block;
+    padding: 1em 0;
+}
+
+.candidateHandler {
+    display: block;
+    text-align: left;
+    padding: 0 1em;
+    
+}
+
+.candidateContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.2em 0;
+}
+
+.deleteicon {
+   display: inline-block;
+   padding: 1em;
+   color: red;
+}
+
+.addicon {
+    display: inline-block;
+   padding: 1em;
+   color: green;
+}
+
+.datetimecontainer {
+    padding: 0 1em;
+    text-align: left;
+}

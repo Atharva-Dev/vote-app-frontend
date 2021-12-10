@@ -24,7 +24,7 @@ function VoterLogin() {
   const [popupStatus, setPopStatus] = useState(false)
   const [popupMessage, setPopupMessage] = useState("")
   const [id, setId] = useState("")
-  navigate = useNavigate()
+  const navigate = useNavigate()
 
 
   const checkIfValid = (value) => {
@@ -51,7 +51,6 @@ function VoterLogin() {
 
 
   const checkStatus = () => {
-    alert(id)
     fetch(baseUrl+'/status/'+id)
     .then(response => response.json())
     .then(data => {
@@ -60,6 +59,7 @@ function VoterLogin() {
         setPopStatus(true)
       }
       else{
+        
         navigate('/vote')
       }
     });

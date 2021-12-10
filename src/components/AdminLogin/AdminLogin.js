@@ -1,4 +1,3 @@
-import './AdminLogin.css';
 
 import React from 'react';
 import { Paper } from '@mui/material';
@@ -13,9 +12,7 @@ function AdminLogin() {
 
 
     const authenticate = () => {
-        console.log('here')
         navigate('/admin-control');
-        
     }
 
     return (
