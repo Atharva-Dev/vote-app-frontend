@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import VoterLogin from './components/VoterLogin/VoterLogin';
 import AdminLogin from './components/AdminLogin/AdminLogin';
 import AdminControl from './components/AdminControl/AdminControl';
+import Vote from './components/Vote/Vote';
+
 
 
 function App() {
@@ -17,6 +19,9 @@ function App() {
       </Routes>
       <Routes>
         <Route path="/admin-control" element={<AdminControl/>}/>
+      </Routes>
+      <Routes>
+        <Route path="/vote" element={ <Vote/> }/>
       </Routes>
     </Router>
   )

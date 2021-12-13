@@ -11,10 +11,7 @@ import { LocalizationProvider } from '@mui/lab';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
-import ListCandidates from './ListCandidates'
-import { Add } from '@mui/icons-material';
-
+import { baseUrl } from '../../Global';
 
 
 
@@ -29,8 +26,7 @@ function AdminControl() {
     const [helper, setHelper] = useState("")
     const [error, setError] = useState(false)
 
-    const setNewCandidateName = (name) => {
-        
+    const setNewCandidateName = (name) => {        
         setNewCandidate(name)
         if (name == "" || name == null) {
             setIsAddDisabled(true)
@@ -72,8 +68,41 @@ function AdminControl() {
         setNewCandidate("")
     }
 
+    const startVoting = () => {
+        const data = {
+            start_time: startTime.toString(),
+            end_time: endTime.toString()
+        }
+        fetch(baseUrl+'/setvotingperiod', {
+            method: 'post',
+            headers: new Headers({
+                "content-type": "application/json"
+              }),
+            body:  JSON.stringify(data)
+        }).then(response => response.json())
+        .then( data => {
+            console.log(data)
+        })
+        
+        const candidatedata = {
+            candidates : candidates
+        }
+
+        fetch(baseUrl+'/addcandidates', {
+            method: 'post',
+            headers: new Headers({
+                "content-type": "application/json"
+              }),
+            body:  JSON.stringify(candidatedata)
+        }).then(response => response.json())
+        .then( data => {
+            console.log(data)
+        })
+    }
+
 
     return (
+        <div className="papercontainer">
         <Paper elevation={6} className="container">
             <div className="datetimecontainer">
             <div className="padded">
@@ -136,8 +165,12 @@ function AdminControl() {
                         <Button disabled={isAddDisabled} onClick={addCandidate}><AddCircleIcon /></Button>
                     </div>
                 </div>
+                <br />
+                <Button onClick={startVoting} variant="contained" disabled={candidates.length <= 0}>Start voting</Button>
             </div>
+            
         </Paper>
+        </div>
     )
 }
 
