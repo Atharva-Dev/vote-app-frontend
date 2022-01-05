@@ -3,7 +3,7 @@
     text-align: center;
     padding: 10% 0
 }
-.container {
+.card {
     padding: 2em ;
     margin: auto;
     display: inline-block;
@@ -22,9 +22,8 @@
 }
 
 .candidateContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
+    
     padding: 0.2em 0;
 }
 
@@ -43,4 +42,9 @@
 .datetimecontainer {
     padding: 0 1em;
     text-align: left;
+}
+
+.inlineBlock {
+    display: inline-block;
+    vertical-align:middle;
 }

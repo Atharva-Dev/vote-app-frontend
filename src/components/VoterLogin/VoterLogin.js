@@ -59,8 +59,12 @@ function VoterLogin() {
         setPopStatus(true)
       }
       else{
-        
-        navigate('/vote')
+
+        navigate('/vote', {
+          state: {
+            id: id,
+          }
+        });
       }
     });
 

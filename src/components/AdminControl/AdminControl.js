@@ -25,8 +25,9 @@ function AdminControl() {
     const [isAddDisabled, setIsAddDisabled] = useState(true)
     const [helper, setHelper] = useState("")
     const [error, setError] = useState(false)
+    const [isVotingStarted, setIsVotingStarted] = useState(false)
 
-    const setNewCandidateName = (name) => {        
+    const setNewCandidateName = (name) => {
         setNewCandidate(name)
         if (name == "" || name == null) {
             setIsAddDisabled(true)
@@ -34,7 +35,7 @@ function AdminControl() {
             setIsAddDisabled(true)
 
         }
-        else if(candidates.indexOf(name) != -1){
+        else if (candidates.indexOf(name) != -1) {
             setError(true)
             setHelper("Candidate already exists!")
             setIsAddDisabled(true)
@@ -73,103 +74,105 @@ function AdminControl() {
             start_time: startTime.toString(),
             end_time: endTime.toString()
         }
-        fetch(baseUrl+'/setvotingperiod', {
+        fetch(baseUrl + '/setvotingperiod', {
             method: 'post',
             headers: new Headers({
                 "content-type": "application/json"
-              }),
-            body:  JSON.stringify(data)
+            }),
+            body: JSON.stringify(data)
         }).then(response => response.json())
-        .then( data => {
-            console.log(data)
-        })
-        
+            .then(data => {
+                console.log(data)
+            })
+
         const candidatedata = {
-            candidates : candidates
+            candidates: candidates
         }
 
-        fetch(baseUrl+'/addcandidates', {
+        fetch(baseUrl + '/addcandidates', {
             method: 'post',
             headers: new Headers({
                 "content-type": "application/json"
-              }),
-            body:  JSON.stringify(candidatedata)
+            }),
+            body: JSON.stringify(candidatedata)
         }).then(response => response.json())
-        .then( data => {
-            console.log(data)
-        })
+            .then(data => {
+                console.log(data)
+            })
+
+        setIsVotingStarted(true)
     }
 
 
     return (
         <div className="papercontainer">
-        <Paper elevation={6} className="container">
-            <div className="datetimecontainer">
-            <div className="padded">
-                <LocalizationProvider
-                    dateAdapter={DateAdapter}>
-                    <DateTimePicker
-                        label="Select start time"
-                        value={startTime}
-                        onChange={startTimeHandler}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
-            </div>
-            <div className="padded">
-                <LocalizationProvider
-                    dateAdapter={DateAdapter}>
-                    <DateTimePicker
-                        minDateTime={startTime}
-                        label="Select End time"
-                        value={endTime}
-                        onChange={(value) => setEndTime(value)}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
-            </div>
-            </div>
-
-            <div className="candidateHandler">
-                <h3 >Candidates</h3>
-                {
-                    candidates.map((candidate, index) => (
-                        <div className="candidateContainer" key={candidate} >
-                            <div>
-                                <TextField
-                                    id="outlined-read-only-input"
-                                    defaultValue={candidate}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                />
-                            </div>
-                            <div className="deleteicon" >
-                                <Button  onClick={() => removeCondidate(index)} ><DeleteIcon/></Button>
-                            </div>
-                        </div>
-                    ))
-                }
-                <div className="candidateContainer">
-                    <div>
-                        <TextField
-                            id="outlined-error-helper-text"
-                            label="new candidate name"
-                            error={error}
-                            helperText={helper}
-                            value={newCandidate}
-                            onChange={(event) => setNewCandidateName(event.target.value)}
-                        />
+            <Paper elevation={6} className="card">
+                <div className="datetimecontainer">
+                    <div className="padded">
+                        <LocalizationProvider
+                            dateAdapter={DateAdapter}>
+                            <DateTimePicker
+                                label="Select start time"
+                                value={startTime}
+                                onChange={startTimeHandler}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
                     </div>
-                    <div  className="addicon">
-                        <Button disabled={isAddDisabled} onClick={addCandidate}><AddCircleIcon /></Button>
+                    <div className="padded">
+                        <LocalizationProvider
+                            dateAdapter={DateAdapter}>
+                            <DateTimePicker
+                                minDateTime={startTime}
+                                label="Select End time"
+                                value={endTime}
+                                onChange={(value) => setEndTime(value)}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
                     </div>
                 </div>
-                <br />
-                <Button onClick={startVoting} variant="contained" disabled={candidates.length <= 0}>Start voting</Button>
-            </div>
-            
-        </Paper>
+
+                <div className="candidateHandler">
+                    <h3 >Candidates</h3>
+                    {
+                        candidates.map((candidate, index) => (
+                            <div className="candidateContainer" key={candidate} >
+                                <div className="inlineBlock">
+                                    <TextField
+                                        id="outlined-read-only-input"
+                                        defaultValue={candidate}
+                                        InputProps={{
+                                            readOnly: true,
+                                        }}
+                                    />
+                                </div>
+                                <div className="deleteicon" >
+                                    <Button onClick={() => removeCondidate(index)} disabled={isVotingStarted}><DeleteIcon /></Button>
+                                </div>
+                            </div>
+                        ))
+                    }
+                    <div className="candidateContainer">
+                        <div className="inlineBlock">
+                            <TextField
+                                id="outlined-error-helper-text"
+                                label="new candidate name"
+                                error={error}
+                                helperText={helper}
+                                value={newCandidate}
+                                onChange={(event) => setNewCandidateName(event.target.value)}
+                            />
+                        </div>
+                        <div className="addicon">
+                            <Button disabled={isAddDisabled || isVotingStarted} onClick={addCandidate}><AddCircleIcon /></Button>
+                        </div>
+                    </div>
+                    <br />
+                    <Button onClick={startVoting} variant="contained" disabled={candidates.length <= 0}>Start voting</Button>
+                </div>
+
+            </Paper>
         </div>
     )
 }
